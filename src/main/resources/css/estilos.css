@@ -1,0 +1,39 @@
+.root {
+    -fx-font-family: "DejaVu Sans", "Segoe UI", sans-serif;
+    -fx-font-size: 13px;
+    -fx-background-color: #f1f5f9;
+    -fx-text-fill: #172b4d;
+    -fx-accent: #087f8c;
+    -fx-focus-color: #087f8c;
+    -fx-faint-focus-color: #087f8c22;
+}
+.cabecera { -fx-background-color: #12344b; -fx-padding: 22 26; }
+.titulo { -fx-font-size: 25px; -fx-font-weight: bold; -fx-text-fill: white; }
+.subtitulo { -fx-text-fill: #c4dbe6; -fx-font-size: 12px; }
+.contenido { -fx-padding: 20 24; }
+.tarjeta { -fx-background-color: white; -fx-padding: 16; -fx-background-radius: 8; -fx-border-color: #dce4ec; -fx-border-radius: 8; }
+.seccion { -fx-font-weight: bold; -fx-font-size: 15px; -fx-text-fill: #12344b; }
+.button { -fx-background-color: #e6edf2; -fx-text-fill: #19384b; -fx-background-radius: 5; -fx-padding: 9 14; -fx-cursor: hand; }
+.button:hover { -fx-background-color: #d5e3ec; }
+.button:disabled { -fx-opacity: 0.45; }
+.primario { -fx-background-color: #087f8c; -fx-text-fill: white; -fx-font-weight: bold; }
+.primario:hover { -fx-background-color: #066974; }
+.peligro { -fx-text-fill: #aa273c; -fx-background-color: #fbeaec; }
+.peligro:hover { -fx-background-color: #f7d8dd; }
+.text-field, .combo-box { -fx-background-color: white; -fx-border-color: #cad5df; -fx-border-radius: 5; -fx-background-radius: 5; -fx-padding: 7 9; }
+.text-field:focused, .combo-box:focused { -fx-border-color: #087f8c; }
+.tab-pane .tab-header-area .tab-header-background { -fx-background-color: #e2eaf1; }
+.tab { -fx-background-color: #e2eaf1; -fx-padding: 9 20; }
+.tab:selected { -fx-background-color: #f1f5f9; }
+.tab:selected .tab-label { -fx-text-fill: #087f8c; -fx-font-weight: bold; }
+.table-view { -fx-border-color: #dce4ec; -fx-background-color: white; -fx-border-radius: 5; }
+.table-view .column-header-background, .table-view .column-header { -fx-background-color: #eaf0f5; }
+.table-view .column-header { -fx-pref-height: 36; }
+.table-row-cell { -fx-cell-size: 37; }
+.table-row-cell:odd { -fx-background-color: #f7fafc; }
+.table-row-cell:selected { -fx-background-color: #d7eeef; }
+.table-row-cell:selected .text { -fx-fill: #12344b; }
+.table-cell { -fx-alignment: CENTER-LEFT; -fx-padding: 7 12; -fx-border-color: transparent; }
+.resumen { -fx-font-weight: bold; -fx-text-fill: #12344b; }
+.ayuda { -fx-text-fill: #526779; -fx-font-size: 11px; }
+.barra-estado { -fx-padding: 12 24; -fx-background-color: white; -fx-border-color: #dce4ec transparent transparent transparent; }
