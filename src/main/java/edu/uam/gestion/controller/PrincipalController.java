@@ -55,8 +55,7 @@ public class PrincipalController {
  });}
  @FXML private void generarReporte(){ejecutar(()->{
   var ruta=reportes.exportar(pedidos.listar());mensaje("PDF generado: "+ruta);
-  new Alert(Alert.AlertType.INFORMATION,"Reporte guardado en:
-"+ruta).showAndWait();
+  new Alert(Alert.AlertType.INFORMATION,"Reporte guardado en:\n"+ruta).showAndWait();
  });}
  @FXML private void actualizarTablas(){ejecutar(this::refrescar);}
  private void refrescar(){

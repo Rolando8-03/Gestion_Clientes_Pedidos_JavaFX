@@ -1,5 +1,8 @@
-target/
-.idea/
+/target/
+/.idea/
 *.iml
-reportes/
+/config/local.properties
+/reportes/
+*.log
 .DS_Store
+Thumbs.db

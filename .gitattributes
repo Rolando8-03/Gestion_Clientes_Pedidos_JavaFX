@@ -1,0 +1,10 @@
+* text=auto
+*.java text eol=lf
+*.fxml text eol=lf
+*.jrxml text eol=lf
+*.sql text eol=lf
+*.md text eol=lf
+mvnw text eol=lf
+mvnw.cmd text eol=crlf
+*.png binary
+*.pdf binary

@@ -1,0 +1,4 @@
+# Copiar como config/local.properties. Este archivo NO debe contener datos reales.
+db.url=jdbc:postgresql://localhost:5432/gestion_uam
+db.user=postgres
+db.password=CAMBIAR_AQUI
