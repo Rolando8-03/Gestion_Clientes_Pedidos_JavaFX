@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="edu.uam.gestion.controller.PrincipalController">
+ <top><VBox spacing="6" style="-fx-background-color: #0099ab; -fx-padding: 16;">
+  <Label text="UAM | Gestión comercial" style="-fx-text-fill: white; -fx-font-size: 23; -fx-font-weight: bold;"/>
+  <Label text="JavaFX + Hibernate ORM + PostgreSQL + JasperReports" style="-fx-text-fill: white;"/>
+ </VBox></top>
+ <center><TabPane tabClosingPolicy="UNAVAILABLE">
+  <tabs>
+   <Tab text="Clientes (CRUD)"><VBox spacing="10" style="-fx-padding: 16;">
+    <HBox spacing="10"><TextField fx:id="nombreField" promptText="Nombre completo" prefWidth="260"/><TextField fx:id="correoField" promptText="Correo electrónico" prefWidth="260"/></HBox>
+    <HBox spacing="10"><Button text="Crear" onAction="#guardarCliente"/><Button text="Actualizar seleccionado" onAction="#editarCliente"/><Button text="Eliminar seleccionado" onAction="#eliminarCliente"/><Button text="Recargar" onAction="#actualizarTablas"/></HBox>
+    <TableView fx:id="clientesTabla" VBox.vgrow="ALWAYS"><columns>
+     <TableColumn fx:id="idClienteCol" text="ID" prefWidth="80"/><TableColumn fx:id="nombreCol" text="Nombre" prefWidth="330"/><TableColumn fx:id="correoCol" text="Correo" prefWidth="390"/>
+    </columns></TableView>
+   </VBox></Tab>
+   <Tab text="Pedidos y relación 1:N"><VBox spacing="10" style="-fx-padding: 16;">
+    <HBox spacing="10"><ComboBox fx:id="clienteCombo" promptText="Seleccione cliente" prefWidth="230"/><TextField fx:id="descripcionField" promptText="Descripción" prefWidth="280"/><TextField fx:id="montoField" promptText="Monto 0.00" prefWidth="130"/><Button text="Registrar pedido" onAction="#crearPedido"/></HBox>
+    <TableView fx:id="pedidosTabla" VBox.vgrow="ALWAYS"><columns>
+     <TableColumn fx:id="idPedidoCol" text="ID" prefWidth="60"/><TableColumn fx:id="pedidoClienteCol" text="Cliente" prefWidth="220"/>
+     <TableColumn fx:id="descripcionCol" text="Descripción" prefWidth="300"/><TableColumn fx:id="totalCol" text="Total" prefWidth="110"/><TableColumn fx:id="fechaCol" text="Fecha" prefWidth="120"/>
+    </columns></TableView><Button text="Generar reporte PDF (JasperReports)" onAction="#generarReporte"/>
+   </VBox></Tab>
+  </tabs>
+ </TabPane></center>
+ <bottom><Label fx:id="estadoLabel" text="Listo" style="-fx-padding: 12;"/></bottom>
+</BorderPane>
