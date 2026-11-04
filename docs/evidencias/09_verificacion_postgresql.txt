@@ -1,0 +1,54 @@
+ id |   nombre   |         correo         
+----+------------+------------------------
+  1 | Ana Pérez  | ana.perez@example.com
+  3 | María Díaz | maria.diaz@example.com
+(2 rows)
+
+ id | cliente_id |  cliente   |            descripcion            |  total  |   fecha    
+----+------------+------------+-----------------------------------+---------+------------
+  3 |          3 | María Díaz | Papelería para exposición         |  425.75 | 2026-11-04
+  2 |          1 | Ana Pérez  | Accesorios para laboratorio       |  780.00 | 2026-11-04
+  1 |          1 | Ana Pérez  | Materiales para práctica de redes | 1250.50 | 2026-11-04
+(3 rows)
+
+ id |   nombre   | cantidad_pedidos | total_pedidos 
+----+------------+------------------+---------------
+  1 | Ana Pérez  |                2 |       2030.50
+  3 | María Díaz |                1 |        425.75
+(2 rows)
+
+ pedidos | total_general 
+---------+---------------
+       3 |       2456.25
+(1 row)
+
+ pedidos_sin_cliente 
+---------------------
+                   0
+(1 row)
+
+        conname        |                             definicion                             
+-----------------------+--------------------------------------------------------------------
+ ck_cliente_correo     | CHECK ((length(btrim((correo)::text)) > 0))
+ ck_cliente_nombre     | CHECK ((length(btrim((nombre)::text)) > 0))
+ ck_pedido_descripcion | CHECK ((length(btrim((descripcion)::text)) > 0))
+ ck_pedido_total       | CHECK ((total > (0)::numeric))
+ clientes_correo_key   | UNIQUE (correo)
+ clientes_pkey         | PRIMARY KEY (id)
+ fk_pedido_cliente     | FOREIGN KEY (cliente_id) REFERENCES clientes(id) ON DELETE CASCADE
+ pedidos_pkey          | PRIMARY KEY (id)
+(8 rows)
+
+BEGIN
+UPDATE 1
+ id |     nombre      
+----+-----------------
+  1 | CAMBIO TEMPORAL
+(1 row)
+
+ROLLBACK
+ id |  nombre   
+----+-----------
+  1 | Ana Pérez
+(1 row)
+

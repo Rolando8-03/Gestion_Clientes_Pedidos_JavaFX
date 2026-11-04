@@ -1,0 +1,20 @@
+Verificación del proyecto - 4 de noviembre de 2026
+Java 21 / PostgreSQL 16.6 / versiones Maven fijadas en pom.xml
+
+Persistencia: mvn -Ppostgres clean verify
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.457 s -- in edu.uam.gestion.report.ReporteServiceTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.023 s -- in edu.uam.gestion.config.ConfiguracionBDTest
+[INFO] Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.155 s -- in edu.uam.gestion.service.ValidacionesTest
+[INFO] Tests run: 26, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.662 s -- in edu.uam.gestion.PersistenciaIT
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+Interfaz: mvn -Pinterfaz verify
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.359 s -- in edu.uam.gestion.report.ReporteServiceTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.022 s -- in edu.uam.gestion.config.ConfiguracionBDTest
+[INFO] Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.300 s -- in edu.uam.gestion.service.ValidacionesTest
+[INFO] Tests run: 26, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 13.75 s -- in edu.uam.gestion.InterfazUIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
