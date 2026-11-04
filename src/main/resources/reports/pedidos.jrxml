@@ -1,21 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pedidos" pageWidth="595" pageHeight="842" columnWidth="515" leftMargin="40" rightMargin="40" topMargin="40" bottomMargin="40" uuid="caa434d2-4a03-4adc-b9cd-0b46ad4d20f1">
- <parameter name="TITULO" class="java.lang.String"/>
- <field name="id" class="java.lang.Long"/><field name="cliente" class="java.lang.String"/><field name="descripcion" class="java.lang.String"/><field name="total" class="java.math.BigDecimal"/><field name="fecha" class="java.lang.String"/>
- <title><band height="55"><textField><reportElement x="0" y="5" width="515" height="35" forecolor="#0099AB"/><textElement><font size="20" isBold="true"/></textElement><textFieldExpression><![CDATA[$P{TITULO}]]></textFieldExpression></textField></band></title>
- <columnHeader><band height="27">
-  <staticText><reportElement x="0" y="0" width="35" height="22"/><text><![CDATA[ID]]></text></staticText>
-  <staticText><reportElement x="40" y="0" width="125" height="22"/><text><![CDATA[CLIENTE]]></text></staticText>
-  <staticText><reportElement x="170" y="0" width="190" height="22"/><text><![CDATA[DESCRIPCIÓN]]></text></staticText>
-  <staticText><reportElement x="365" y="0" width="75" height="22"/><text><![CDATA[TOTAL]]></text></staticText>
-  <staticText><reportElement x="445" y="0" width="70" height="22"/><text><![CDATA[FECHA]]></text></staticText>
- </band></columnHeader>
- <detail><band height="25">
-  <textField><reportElement x="0" y="0" width="35" height="20"/><textFieldExpression><![CDATA[$F{id}]]></textFieldExpression></textField>
-  <textField><reportElement x="40" y="0" width="125" height="20"/><textFieldExpression><![CDATA[$F{cliente}]]></textFieldExpression></textField>
-  <textField><reportElement x="170" y="0" width="190" height="20"/><textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression></textField>
-  <textField pattern="#,##0.00"><reportElement x="365" y="0" width="75" height="20"/><textFieldExpression><![CDATA[$F{total}]]></textFieldExpression></textField>
-  <textField><reportElement x="445" y="0" width="70" height="20"/><textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression></textField>
- </band></detail>
- <pageFooter><band height="25"><textField><reportElement x="400" y="0" width="115" height="20"/><textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER}]]></textFieldExpression></textField></band></pageFooter>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="pedidos" pageWidth="595" pageHeight="842" columnWidth="515"
+              leftMargin="40" rightMargin="40" topMargin="36" bottomMargin="36"
+              whenNoDataType="AllSectionsNoDetail" uuid="caa434d2-4a03-4adc-b9cd-0b46ad4d20f1">
+    <style name="Base" isDefault="true" fontName="DejaVu Sans" fontSize="9" forecolor="#19384B"/>
+    <style name="Encabezado" style="Base" forecolor="#FFFFFF" isBold="true"/>
+    <parameter name="TITULO" class="java.lang.String"/>
+    <parameter name="FILTRO" class="java.lang.String"/>
+    <field name="id" class="java.lang.Long"/>
+    <field name="cliente" class="java.lang.String"/>
+    <field name="descripcion" class="java.lang.String"/>
+    <field name="total" class="java.math.BigDecimal"/>
+    <field name="fecha" class="java.lang.String"/>
+    <variable name="TOTAL_GENERAL" class="java.math.BigDecimal" calculation="Sum">
+        <variableExpression><![CDATA[$F{total}]]></variableExpression>
+        <initialValueExpression><![CDATA[java.math.BigDecimal.ZERO]]></initialValueExpression>
+    </variable>
+    <title>
+        <band height="117" splitType="Stretch">
+            <staticText><reportElement x="0" y="0" width="515" height="16" forecolor="#087F8C"/><textElement><font size="9" isBold="true"/></textElement><text><![CDATA[UAM  /  GESTIÓN DE CLIENTES Y PEDIDOS]]></text></staticText>
+            <textField><reportElement x="0" y="25" width="515" height="29"/><textElement><font size="22" isBold="true"/></textElement><textFieldExpression><![CDATA[$P{TITULO}]]></textFieldExpression></textField>
+            <textField pattern="'Generado el 'dd/MM/yyyy' a las 'HH:mm">
+                <reportElement x="0" y="59" width="515" height="17" forecolor="#526779"/>
+                <textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+            </textField>
+            <textField textAdjust="StretchHeight"><reportElement x="0" y="81" width="515" height="29" forecolor="#526779"/><textFieldExpression><![CDATA[$P{FILTRO}]]></textFieldExpression></textField>
+        </band>
+    </title>
+    <columnHeader>
+        <band height="31">
+            <rectangle><reportElement x="0" y="0" width="515" height="28" backcolor="#12344B"/><graphicElement><pen lineWidth="0"/></graphicElement></rectangle>
+            <staticText><reportElement style="Encabezado" x="7" y="7" width="28" height="16"/><text><![CDATA[ID]]></text></staticText>
+            <staticText><reportElement style="Encabezado" x="40" y="7" width="116" height="16"/><text><![CDATA[CLIENTE]]></text></staticText>
+            <staticText><reportElement style="Encabezado" x="166" y="7" width="171" height="16"/><text><![CDATA[DESCRIPCIÓN]]></text></staticText>
+            <staticText><reportElement style="Encabezado" x="347" y="7" width="82" height="16"/><textElement textAlignment="Right"/><text><![CDATA[TOTAL (C$)]]></text></staticText>
+            <staticText><reportElement style="Encabezado" x="441" y="7" width="68" height="16"/><text><![CDATA[FECHA]]></text></staticText>
+        </band>
+    </columnHeader>
+    <detail>
+        <band height="34" splitType="Stretch">
+            <textField><reportElement x="7" y="8" width="28" height="19"/><textFieldExpression><![CDATA[$F{id}]]></textFieldExpression></textField>
+            <textField textAdjust="StretchHeight"><reportElement x="40" y="8" width="116" height="19"/><textFieldExpression><![CDATA[$F{cliente}]]></textFieldExpression></textField>
+            <textField textAdjust="StretchHeight"><reportElement x="166" y="8" width="171" height="19"/><textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression></textField>
+            <textField pattern="#,##0.00"><reportElement x="342" y="8" width="87" height="19"/><textElement textAlignment="Right"/><textFieldExpression><![CDATA[$F{total}]]></textFieldExpression></textField>
+            <textField><reportElement x="441" y="8" width="68" height="19"/><textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression></textField>
+            <line><reportElement positionType="FixRelativeToBottom" x="0" y="33" width="515" height="1" forecolor="#DFE7EE"/><graphicElement><pen lineWidth="0.5"/></graphicElement></line>
+        </band>
+    </detail>
+    <pageFooter>
+        <band height="32">
+            <line><reportElement x="0" y="0" width="515" height="1" forecolor="#DFE7EE"/><graphicElement><pen lineWidth="0.5"/></graphicElement></line>
+            <staticText><reportElement x="0" y="12" width="370" height="14" forecolor="#526779"/><textElement><font size="8"/></textElement><text><![CDATA[Importes expresados en córdobas. Información del listado consultado.]]></text></staticText>
+            <textField><reportElement x="407" y="12" width="108" height="14" forecolor="#526779"/><textElement textAlignment="Right"><font size="8"/></textElement><textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER}]]></textFieldExpression></textField>
+        </band>
+    </pageFooter>
+    <summary>
+        <band height="104">
+            <textField><reportElement x="7" y="16" width="290" height="20"/><textFieldExpression><![CDATA["Pedidos incluidos: " + $V{REPORT_COUNT}]]></textFieldExpression></textField>
+            <textField pattern="'Total C$ '#,##0.00"><reportElement x="300" y="13" width="209" height="24" forecolor="#087F8C"/><textElement textAlignment="Right"><font size="13" isBold="true"/></textElement><textFieldExpression><![CDATA[$V{TOTAL_GENERAL} == null ? java.math.BigDecimal.ZERO : $V{TOTAL_GENERAL}]]></textFieldExpression></textField>
+            <staticText><reportElement x="7" y="44" width="502" height="24" forecolor="#526779"><printWhenExpression><![CDATA[$V{REPORT_COUNT} == 0]]></printWhenExpression></reportElement><text><![CDATA[Sin pedidos para los criterios seleccionados.]]></text></staticText>
+            <staticText><reportElement x="7" y="78" width="502" height="18" forecolor="#526779"/><textElement><font size="8"/></textElement><text><![CDATA[Generado desde la aplicación mediante JasperReports.]]></text></staticText>
+        </band>
+    </summary>
 </jasperReport>

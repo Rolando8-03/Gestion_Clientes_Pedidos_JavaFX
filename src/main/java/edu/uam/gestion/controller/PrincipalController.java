@@ -59,6 +59,7 @@ public class PrincipalController {
     private final NumberFormat dinero = NumberFormat.getNumberInstance(Locale.forLanguageTag("es-NI"));
     private Long clienteEditado;
     private Long pedidoEditado;
+    private String alcanceMostrado = "Todos los clientes";
 
     @FXML
     public void initialize() {
@@ -197,6 +198,7 @@ public class PrincipalController {
         }, lista -> {
             limpiarPedido();
             mostrarPedidos(lista);
+            alcanceMostrado = describirFiltro(clienteId, texto);
             estadoLabel.setText(lista.isEmpty() ? "No hay pedidos para este filtro." : "Filtro aplicado.");
         });
     }
@@ -232,6 +234,7 @@ public class PrincipalController {
             seleccionar(filtroClienteCombo, filtro);
             clientesResumenLabel.setText(datos.visibles().size() + " cliente(s)");
             mostrarPedidos(datos.pedidos());
+            alcanceMostrado = describirFiltro(filtro, descripcion);
             estadoLabel.setText(mensaje);
         });
     }
@@ -246,16 +249,18 @@ public class PrincipalController {
     private void generarReporte() {
         // Se exporta exactamente el listado visible, incluido el filtro aplicado.
         List<Pedido> filas = List.copyOf(pedidosTabla.getItems());
-        String alcance = filtroClienteCombo.getValue() == null ? "Todos los clientes"
-                : "Cliente: " + filtroClienteCombo.getValue().getNombre();
-        if (!buscarPedidoField.getText().isBlank()) {
-            alcance += " | Descripción: " + buscarPedidoField.getText().strip();
-        }
-        String filtro = alcance;
+        String filtro = alcanceMostrado;
         ejecutar("Generando reporte PDF...", () -> reportes.exportar(filas, Path.of("reportes", "pedidos.pdf"), filtro), ruta -> {
             estadoLabel.setText("Reporte generado: " + ruta);
             alerta(Alert.AlertType.INFORMATION, "Reporte generado", "El PDF se guardó en:\n" + ruta);
         });
+    }
+
+    private String describirFiltro(Long clienteId, String texto) {
+        String alcance = clienteId == null ? "Todos los clientes" : "Cliente: "
+                + filtroClienteCombo.getItems().stream().filter(c -> c.getId().equals(clienteId))
+                .map(Cliente::getNombre).findFirst().orElse("#" + clienteId);
+        return texto == null || texto.isBlank() ? alcance : alcance + " | Descripción: " + texto.strip();
     }
 
     @FXML
