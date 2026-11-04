@@ -1,43 +1,74 @@
 package edu.uam.gestion.service;
+
 import edu.uam.gestion.config.HibernateUtil;
+import edu.uam.gestion.config.Transacciones;
 import edu.uam.gestion.model.Cliente;
 import edu.uam.gestion.repository.ClienteRepository;
+import org.hibernate.SessionFactory;
+import org.hibernate.exception.ConstraintViolationException;
 import java.util.List;
+
 public class ClienteService {
- private final ClienteRepository repo=new ClienteRepository();
- public List<Cliente> listar(){try(var s=HibernateUtil.factory().openSession()){return repo.listar(s);}}
- public void crear(String nombre,String correo){
-  validar(nombre,correo);
-  try(var s=HibernateUtil.factory().openSession()){
-   var tx=s.beginTransaction();
-   try{
-    if(repo.existeCorreo(s,correo.trim(),null))throw new IllegalArgumentException("El correo ya está registrado");
-    repo.guardar(s,new Cliente(nombre.trim(),correo.trim()));tx.commit();
-   }catch(RuntimeException e){if(tx.isActive())tx.rollback();throw e;}
-  }
- }
- public void actualizar(Long id,String nombre,String correo){
-  validar(nombre,correo);
-  try(var s=HibernateUtil.factory().openSession()){
-   var tx=s.beginTransaction();
-   try{
-    Cliente c=repo.obtener(s,id);
-    if(c==null)throw new IllegalArgumentException("Cliente no encontrado");
-    if(repo.existeCorreo(s,correo.trim(),id))throw new IllegalArgumentException("El correo ya está registrado");
-    c.actualizar(nombre.trim(),correo.trim());tx.commit();
-   }catch(RuntimeException e){if(tx.isActive())tx.rollback();throw e;}
-  }
- }
- public void eliminar(Long id){
-  try(var s=HibernateUtil.factory().openSession()){
-   var tx=s.beginTransaction();
-   try{Cliente c=repo.obtener(s,id);if(c==null)throw new IllegalArgumentException("Cliente no encontrado");repo.eliminar(s,c);tx.commit();}
-   catch(RuntimeException e){if(tx.isActive())tx.rollback();throw e;}
-  }
- }
- private void validar(String n,String c){
-  if(n==null||n.isBlank()||n.trim().length()>120)throw new IllegalArgumentException("Nombre obligatorio (máx. 120)");
-  if(c==null||!c.trim().matches("^[^\s@]+@[^\s@]+\.[^\s@]+$")||c.trim().length()>150)
-   throw new IllegalArgumentException("Correo inválido");
- }
+    private final ClienteRepository repo = new ClienteRepository();
+    private final Transacciones transacciones;
+
+    public ClienteService() { this.transacciones = new Transacciones(HibernateUtil::factory); }
+    public ClienteService(SessionFactory factory) { this.transacciones = new Transacciones(() -> factory); }
+
+    public List<Cliente> listar() { return buscar(""); }
+
+    public List<Cliente> buscar(String texto) {
+        return transacciones.ejecutar(s -> repo.buscar(s, texto));
+    }
+
+    public Cliente crear(String nombre, String correo) {
+        String n = Validaciones.texto(nombre, "El nombre", 120);
+        String c = Validaciones.correo(correo);
+        return escritura(() -> transacciones.ejecutar(s -> {
+            if (repo.existeCorreo(s, c, null)) {
+                throw new IllegalArgumentException("El correo ya está registrado.");
+            }
+            Cliente cliente = new Cliente(n, c);
+            repo.guardar(s, cliente);
+            return cliente;
+        }));
+    }
+
+    public void actualizar(Long id, String nombre, String correo) {
+        Validaciones.id(id, "un cliente");
+        String n = Validaciones.texto(nombre, "El nombre", 120);
+        String c = Validaciones.correo(correo);
+        escritura(() -> transacciones.ejecutar(s -> {
+            Cliente cliente = repo.obtener(s, id);
+            if (cliente == null) { throw new IllegalArgumentException("El cliente ya no existe."); }
+            if (repo.existeCorreo(s, c, id)) {
+                throw new IllegalArgumentException("El correo ya está registrado.");
+            }
+            cliente.actualizar(n, c);
+            // Está managed: Hibernate detecta los cambios al confirmar la transacción.
+            return null;
+        }));
+    }
+
+    public void eliminar(Long id) {
+        Validaciones.id(id, "un cliente");
+        transacciones.ejecutar(s -> {
+            Cliente cliente = repo.obtener(s, id);
+            if (cliente == null) { throw new IllegalArgumentException("El cliente ya no existe."); }
+            repo.eliminar(s, cliente);
+            return null;
+        });
+    }
+
+    private <T> T escritura(java.util.function.Supplier<T> operacion) {
+        try {
+            return operacion.get();
+        } catch (ConstraintViolationException e) {
+            // Cubre también dos altas simultáneas que superen la comprobación previa.
+            if ("23505".equals(e.getSQLState())) {
+                throw new IllegalArgumentException("El correo ya está registrado.", e);
+            }
+            throw e;
+        }
+    }
 }
